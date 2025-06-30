@@ -13,11 +13,12 @@ typedef int data_t;
 #   include "algorithms/naive.h"
 #elif defined( MT_NAIVE_LOOPSWAP )
 #   include "algorithms/naive_swapped_loops.h"
-#elif defined( MT_TILED_SIMPLE )
-#   include "algorithms/tiled_simple.h"
+//#elif defined( MT_TILED_SIMPLE )
+//#   include "algorithms/tiled_simple.h"
 #elif defined( MT_TILED_GENERIC)
 #   include "algorithms/tiled_generic.h"
 #else
+    void matrix_transpose(data_t*, data_t*, size_t, int) { /* dummy function */ }
 #   error "no algorithm selected! Compile with `-D<ALGORITHM>` with <ALGORITHM> being one of: MT_NAIVE, MT_NAIVE_LOOPSWAP, MT_TILED_SIMPLE, MT_TILED_GENERIC"
 #endif
 

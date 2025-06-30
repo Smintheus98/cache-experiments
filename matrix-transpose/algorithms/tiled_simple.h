@@ -4,6 +4,9 @@
  *  tiled transpose
  *  supposed to be cache-efficient (it is!)
  *  only allows perfect tile decomposition (n % tile_size == 0)
+ *
+ *  NOTE:  this version is no longer used as its runtime is equivalent to the
+ *         one of tiled-generic while the latter code is cleaner
  */
 
 void matrix_transpose(data_t* out, data_t* in, size_t n, size_t tile_size) {
