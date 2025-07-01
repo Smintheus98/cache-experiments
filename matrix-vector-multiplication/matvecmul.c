@@ -15,7 +15,7 @@ typedef int data_t;
 #   include "algorithms/tiled.h"
 #else
     void matvecmul(data_t*, data_t*, data_t*, size_t, size_t, size_t) { /* dummy function */ }
-#   error "no algorithm selected! Compile with `-D<ALGORITHM>` with <ALGORITHM> being one of: MT_NAIVE, MT_NAIVE_LOOPSWAP, MT_TILED_SIMPLE, MT_TILED_GENERIC"
+#   error "no algorithm selected! Compile with `-D<ALGORITHM>` with <ALGORITHM> being one of: MVM_NAIVE, MVM_TILED"
 #endif
 
 
@@ -27,7 +27,7 @@ double time_diff(struct timespec start, struct timespec end) {
 
 int main(void) {
     // NOTE: for now only quadratic matrices are considered
-    const int n = 4096;
+    const size_t n = 32768;
     data_t * A, * b, * res;
     int loop = 10;
     int seed = 89677632;
@@ -46,11 +46,11 @@ int main(void) {
 
     // measure execution time
 #ifdef MVM_TILED
-    for (int ts = 1; ts <= 256; ts *= 2) {
-        printf ("Tile size: %i  ", ts);
+    for (size_t ts = 1; ts <= n; ts *= 2) {
+        printf ("Tile size: %lu  ", ts);
 #else
     {
-        int ts;
+        size_t ts;
 #endif
         struct timespec t_start, t_end;
         clock_gettime(CLOCK_REALTIME, &t_start);
@@ -64,7 +64,7 @@ int main(void) {
     }
 
 
-    // check transpose
+    // check matrix vector multiplication
     bool correct = true;
     srand(seed);
     for (size_t r = 0; r < n; ++r) {

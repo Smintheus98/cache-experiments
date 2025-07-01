@@ -18,7 +18,7 @@ typedef int data_t;
 #elif defined( MT_TILED_GENERIC)
 #   include "algorithms/tiled_generic.h"
 #else
-    void matrix_transpose(data_t*, data_t*, size_t, int) { /* dummy function */ }
+    void matrix_transpose(data_t*, data_t*, size_t, size_t) { /* dummy function */ }
 #   error "no algorithm selected! Compile with `-D<ALGORITHM>` with <ALGORITHM> being one of: MT_NAIVE, MT_NAIVE_LOOPSWAP, MT_TILED_SIMPLE, MT_TILED_GENERIC"
 #endif
 
@@ -31,7 +31,7 @@ double time_diff(struct timespec start, struct timespec end) {
 
 int main(void) {
     // NOTE: for now only quadratic matrices are considered
-    const int n = 4096;
+    const size_t n = 4096;
     data_t * A, * A_trans;
     int loop = 10;
     int seed = 89677632;
@@ -47,11 +47,11 @@ int main(void) {
 
     // measure execution time
 #if defined(MT_TILED_SIMPLE) || defined(MT_TILED_GENERIC)
-    for (int ts = 1; ts <= 256; ts *= 2) {
-        printf ("Tile size: %i  ", ts);
+    for (size_t ts = 1; ts <= n; ts *= 2) {
+        printf ("Tile size: %lu  ", ts);
 #else
     {
-        int ts;
+        size_t ts;
 #endif
         struct timespec t_start, t_end;
         clock_gettime(CLOCK_REALTIME, &t_start);
